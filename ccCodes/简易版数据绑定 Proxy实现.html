@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <!-- <script type="text/javascript" src="https://cdn.jsdelivr.net/vue/2.1.3/vue.js"></script> -->
+</head>
+<body>
+
+<div id="app">
+    <input type="text" id = "text">
+     <p></p>
+</div>
+
+<script type="text/javascript">
+    function update(){
+        document.querySelector('p').innerHTML  = ccText.name
+    }
+    document.getElementById("text").addEventListener("input",(e)=>{
+        ccText.name = e.target.value
+        update()
+    })
+    let onwatch = (obj)=>{
+        let handler = {
+            get(target,property,receiver){
+                console.log("getter")
+                return Reflect.get(target,property,receiver)
+            },
+            set(target,property,value,receiver){
+                console.log("setter")
+                update()
+                return  Reflect.set(target,property,value,receiver)
+            }
+        }
+        return new Proxy(obj,handler)
+    }
+    let ccobj = {name:"ccurry"}
+    let ccText = onwatch(ccobj)
+</script>
+</body>
+</html>
